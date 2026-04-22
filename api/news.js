@@ -1,38 +1,40 @@
-// api/news.js — GNews.io proxy (real-time, free tier)
+// api/news.js — NewsData.io proxy
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   if (req.method === 'OPTIONS') return res.status(200).end();
-  res.setHeader('Cache-Control', 's-maxage=120, stale-while-revalidate=60');
+  res.setHeader('Cache-Control', 's-maxage=180, stale-while-revalidate=60');
 
-  const API_KEY = 'e9e0822af5298a7dbb8c74d4f81037ce';
+  const API_KEY = process.env.NEWSDATA_KEY || 'pub_4e0733e2c1554fa7857ceb310242dfc6';
+  const cat = req.query.category || 'national';
 
   const categoryMap = {
-    national: 'top headlines united states',
-    politics: 'us politics congress white house',
-    economy:  'us economy federal reserve inflation',
-    foreign:  'us foreign policy diplomacy nato',
-    tech:     'us technology artificial intelligence silicon valley',
-    defense:  'us military pentagon defense',
+    national: { category: 'top',        q: 'united states' },
+    politics: { category: 'politics',   q: 'us congress white house' },
+    economy:  { category: 'business',   q: 'us economy federal reserve' },
+    foreign:  { category: 'world',      q: 'us foreign policy' },
+    tech:     { category: 'technology', q: 'united states' },
+    defense:  { category: 'top',        q: 'us military pentagon defense' },
   };
 
-  const cat = req.query.category || 'national';
-  const q   = encodeURIComponent(categoryMap[cat] || 'united states');
+  const { category, q } = categoryMap[cat] || categoryMap.national;
 
   try {
-    const url = `https://gnews.io/api/v4/search?q=${q}&lang=en&country=us&max=10&apikey=${API_KEY}`;
-    const r    = await fetch(url);
+    const url = `https://newsdata.io/api/1/news?apikey=${API_KEY}&country=us&language=en&category=${category}&q=${encodeURIComponent(q)}&size=10`;
+    const r = await fetch(url);
     const data = await r.json();
 
-    if (data.errors) throw new Error(data.errors.join(', '));
+    if (data.status !== 'success') {
+      throw new Error(data.message || 'API error');
+    }
 
-    const articles = (data.articles || []).map(a => ({
-      title:       a.title  || '',
-      description: a.description || '',
-      source:      a.source?.name || '',
-      url:         a.url,
-      image:       a.image || null,
-      publishedAt: a.publishedAt,
-    }));
+    const articles = (data.results || []).map(a => ({
+      title:       a.title || '',
+      description: a.description || a.content?.slice(0, 200) || '',
+      source:      a.source_name || a.source_id || '',
+      url:         a.link || '',
+      image:       a.image_url || null,
+      publishedAt: a.pubDate || new Date().toISOString(),
+    })).filter(a => a.title.length > 10);
 
     return res.status(200).json({ ok: true, articles });
   } catch (err) {
