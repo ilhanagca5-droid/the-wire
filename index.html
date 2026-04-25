@@ -326,8 +326,10 @@ let allCache=[];
 function getImg(url,h,letter){
   const fb=CAT_IMGS[currentCat]||CAT_IMGS.national;
   const src=url||fb;
-  const ph=`<div class="img-ph" style="height:${h}px;"><div class="img-ph-letter" style="font-size:${Math.floor(h*.5)}px;">${letter||'N'}</div></div>`;
-  return `<img src="${src}" style="width:100%;height:${h}px;object-fit:cover;display:block;" onerror="this.outerHTML='${ph.replace(/'/g,'&#39;')}'" alt="" loading="lazy">`;
+  if(h>0){
+    return `<img src="${src}" style="width:100%;height:${h}px;object-fit:cover;display:block;" onerror="this.src='${fb}'" alt="" loading="lazy">`;
+  }
+  return `<img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='${fb}'" alt="" loading="lazy">`;
 }
 
 function srcTag(s){return`<div class="card-src">${s}</div>`;}
