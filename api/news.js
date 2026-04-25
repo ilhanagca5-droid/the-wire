@@ -9,6 +9,8 @@ const FEEDS = {
     { url: 'https://www.cbsnews.com/latest/rss/main', name: 'CBS News' },
     { url: 'https://abcnews.go.com/abcnews/usheadlines', name: 'ABC News' },
     { url: 'https://feeds.foxnews.com/foxnews/national', name: 'Fox News' },
+    { url: 'https://feeds.nbcnews.com/nbcnews/public/news', name: 'NBC News' },
+    { url: 'https://www.latimes.com/rss2.0.xml', name: 'LA Times' },
   ],
   politics: [
     { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml', name: 'New York Times' },
@@ -17,6 +19,8 @@ const FEEDS = {
     { url: 'https://thehill.com/rss/syndicator/19109', name: 'The Hill' },
     { url: 'https://feeds.politico.com/politico/politics', name: 'Politico' },
     { url: 'https://abcnews.go.com/abcnews/politicsheadlines', name: 'ABC News' },
+    { url: 'https://feeds.foxnews.com/foxnews/politics', name: 'Fox News' },
+    { url: 'https://feeds.nbcnews.com/nbcnews/public/politics', name: 'NBC News' },
   ],
   economy: [
     { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Economy.xml', name: 'New York Times' },
@@ -25,6 +29,8 @@ const FEEDS = {
     { url: 'https://www.cnbc.com/id/10000664/device/rss/rss.html', name: 'CNBC' },
     { url: 'https://feeds.bloomberg.com/markets/news.rss', name: 'Bloomberg' },
     { url: 'https://feeds.foxbusiness.com/foxbusiness/latest', name: 'Fox Business' },
+    { url: 'https://feeds.washingtonpost.com/rss/business', name: 'Washington Post' },
+    { url: 'https://www.cnbc.com/id/15839069/device/rss/rss.html', name: 'CNBC Economy' },
   ],
   foreign: [
     { url: 'https://rss.nytimes.com/services/xml/rss/nyt/World.xml', name: 'New York Times' },
@@ -33,6 +39,8 @@ const FEEDS = {
     { url: 'https://www.cbsnews.com/latest/rss/world', name: 'CBS News' },
     { url: 'https://abcnews.go.com/abcnews/internationalheadlines', name: 'ABC News' },
     { url: 'https://feeds.reuters.com/reuters/worldNews', name: 'Reuters' },
+    { url: 'https://feeds.bbci.co.uk/news/world/us_and_canada/rss.xml', name: 'BBC News' },
+    { url: 'https://feeds.nbcnews.com/nbcnews/public/world', name: 'NBC News' },
   ],
   tech: [
     { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Technology.xml', name: 'New York Times' },
@@ -41,6 +49,8 @@ const FEEDS = {
     { url: 'https://feeds.wired.com/wired/index', name: 'Wired' },
     { url: 'https://www.cnbc.com/id/19854910/device/rss/rss.html', name: 'CNBC Tech' },
     { url: 'https://feeds.npr.org/1019/rss.xml', name: 'NPR' },
+    { url: 'https://feeds.feedburner.com/TechCrunch', name: 'TechCrunch' },
+    { url: 'https://feeds.washingtonpost.com/rss/business/technology', name: 'Washington Post' },
   ],
   defense: [
     { url: 'https://www.defensenews.com/arc/outboundfeeds/rss/', name: 'Defense News' },
@@ -49,6 +59,8 @@ const FEEDS = {
     { url: 'https://www.military.com/rss-feeds/content?category=news', name: 'Military.com' },
     { url: 'https://feeds.washingtonpost.com/rss/national-security', name: 'Washington Post' },
     { url: 'https://abcnews.go.com/abcnews/internationalheadlines', name: 'ABC News' },
+    { url: 'https://feeds.foxnews.com/foxnews/national', name: 'Fox News' },
+    { url: 'https://www.cbsnews.com/latest/rss/world', name: 'CBS News' },
   ],
 };
 
