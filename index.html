@@ -199,27 +199,35 @@ function timeAgo(iso){
 
 const CAT={national:'National',politics:'Politics',economy:'Economy',foreign:'Foreign Policy',tech:'Technology',defense:'Defense'};
 const SIZES=['mc-hero','mc-tall','mc-wide','mc-wide','mc-medium','mc-mini','mc-small','mc-small','mc-mini','mc-medium','mc-small','mc-small'];
-const PHSZ={hero:'110px',tall:'80px',wide:'64px',medium:'48px',small:'36px',mini:'36px'};
 
-function phSz(size){return PHSZ[size.replace('mc-','')]||'40px';}
-function phL(t){return t?t.trim()[0].toUpperCase():'N';}
+// Unsplash category images — always available, no API key needed
+const CAT_IMGS={
+  national:   'https://images.unsplash.com/photo-1501503069-cd43f3bd0f89?w=800&q=80',
+  politics:   'https://images.unsplash.com/photo-1555848962-6e79363ec58f?w=800&q=80',
+  economy:    'https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?w=800&q=80',
+  foreign:    'https://images.unsplash.com/photo-1526778548025-fa2f459cd5c1?w=800&q=80',
+  tech:       'https://images.unsplash.com/photo-1518770660439-4636190af475?w=800&q=80',
+  defense:    'https://images.unsplash.com/photo-1569629743817-70d8db6c323b?w=800&q=80',
+};
 
-function cardImg(url,size,title){
-  const ph=`<div class="mcard-ph"><div class="ph-letter" style="font-size:${phSz(size)}">${phL(title)}</div></div>`;
-  if(!url)return ph;
-  return `<img src="${url}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.outerHTML='${ph.replace(/'/g,"\\'")}'" alt="" loading="lazy">`;
+let currentCat='national';
+
+function cardImg(url,size){
+  const fallback=CAT_IMGS[currentCat]||CAT_IMGS.national;
+  const src=url||fallback;
+  return `<img src="${src}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='${fallback}'" alt="" loading="lazy">`;
 }
 
 function buildCard(a,size){
   return `<div class="mcard ${size}" onclick="window.open('${a.url}','_blank')">
-    <div class="mcard-img">${cardImg(a.image,size,a.title)}</div>
+    <div class="mcard-img">${cardImg(a.image,size)}</div>
     <div class="mcard-body">
       <div class="msrc">${a.source}</div>
       <div class="mhl">${a.title}</div>
       <div class="mdesc">${a.description||''}</div>
       <div class="mfoot">
         <span class="mtime">${timeAgo(a.publishedAt)}</span>
-        <a class="mread" href="${a.url}" target="_blank" onclick="event.stopPropagation()">Read →</a>
+        <a class="mread" href="${a.url}" target="_blank" onclick="event.stopPropagation()">Read &#8594;</a>
       </div>
     </div>
   </div>`;
@@ -228,6 +236,7 @@ function buildCard(a,size){
 async function loadNews(cat,btn){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
+  currentCat=cat;
   const col=document.getElementById('news-col');
   col.innerHTML=`<div class="loading-state"><div class="bar"></div><div class="lbl">Loading</div></div>`;
   try{
